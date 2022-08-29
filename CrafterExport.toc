@@ -4,6 +4,8 @@
 ## Author: Ok
 ## Version: "1.0"
 ## DefaultState: enabled
+## X-Wago-ID: 2jK8JbNy
+## X-Curse-Project-ID: 665969
 
 ExcludedRecipes.lua
 CrafterExport.lua
