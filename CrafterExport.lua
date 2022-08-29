@@ -79,6 +79,7 @@ function createCrafterExport()
   frame:SetBackdropBorderColor(255, 255, 255, 1)
   frame:SetBackdropColor(0.1, 0.1, 0.1, 1)
   frame:SetFrameStrata("HIGH")
+  CrafterExportFrameButton:Hide()
   
   frame.scrollFrame = CreateFrame("ScrollFrame", "CrafterExportScroll", CrafterExportFrame, "UIPanelScrollFrameTemplate")
   frame.scrollFrame:SetPoint("TOP", 0, -18)
