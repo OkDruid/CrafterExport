@@ -15,9 +15,8 @@ local function OnEvent(self, event, ...)
   end
 
   -- When the profession window is closed
-  if (event == "TRADE_SKILL_CLOSE" or event == "CRAFT_CLOSE") then
+  if (event == "TRADE_SKILL_CLOSE") then
       CrafterExport:UnregisterEvent("TRADE_SKILL_UPDATE")
-      CrafterExport:UnregisterEvent("CRAFT_UPDATE")
   end
   if (event == "CRAFT_CLOSE") then
     CrafterExport:UnregisterEvent("CRAFT_UPDATE")
