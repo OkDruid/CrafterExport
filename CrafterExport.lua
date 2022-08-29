@@ -60,7 +60,7 @@ function openCrafterExport(closed)
   local professionRank = tsRank;
   if (craftRank > 0) then
     professionRank = craftRank;
-    professionName = crafterName;
+    professionName = craftName;
   end
   CrafterExportFrame.title:SetText("CrafterExport: " .. professionName .. " (" .. professionRank .. ")")
   CrafterExportText:SetText(recipes:sub(1, -2))
