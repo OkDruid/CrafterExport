@@ -5,9 +5,9 @@ local toggle = false
 
 
 local function OnEvent(self, event, ...)
-
-    -- When the profession window is open
-	if (event == "TRADE_SKILL_SHOW") then 
+	
+  -- When the profession window is open
+  if (event == "TRADE_SKILL_SHOW") then 
     CrafterExport:RegisterEvent("TRADE_SKILL_UPDATE")
   end
   if (event == "CRAFT_SHOW") then 
