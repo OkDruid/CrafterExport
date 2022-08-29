@@ -4,28 +4,20 @@ local ExcludedRecipes = CE.ExcludedRecipes
 local toggle = false
 
 
-local function OnEvent(self, event, ...)
-	
-  -- When the profession window is open
-  if (event == "TRADE_SKILL_SHOW") then 
-    CrafterExport:RegisterEvent("TRADE_SKILL_UPDATE")
-  end
-  if (event == "CRAFT_SHOW") then 
-    CrafterExport:RegisterEvent("CRAFT_UPDATE")
-  end
+function OnEvent(self, event, ...)
+
+  CrafterExport:RegisterEvent("TRADE_SKILL_UPDATE")
+  CrafterExport:RegisterEvent("CRAFT_UPDATE")
 
   -- When the profession window is closed
   if (event == "TRADE_SKILL_CLOSE") then
-      CrafterExport:UnregisterEvent("TRADE_SKILL_UPDATE")
+    CrafterExport:UnregisterEvent("TRADE_SKILL_UPDATE")
   end
   if (event == "CRAFT_CLOSE") then
     CrafterExport:UnregisterEvent("CRAFT_UPDATE")
   end
 
-  -- When a profession is changed or filtered
-  if (event == "TRADE_SKILL_UPDATE" or event == "CRAFT_UPDATE") then
-      openCrafterExport(toggle) 
-  end
+  openCrafterExport(toggle)
 
 end
 
@@ -51,11 +43,17 @@ function openCrafterExport(closed)
   if not CrafterExportFrame then
     createCrafterExport()
   end
-
   local recipes = Recipes(ExcludedRecipes);
-
+  local craftName, craftRank, _ = GetCraftDisplaySkillLine()
+	local tsName, tsRank, _ = GetTradeSkillLine()
+  local professionName = tsName;
+  local professionRank = tsRank;
+  if (craftRank > 0) then
+    professionRank = craftRank;
+    professionName = crafterName;
+  end
+  CrafterExportFrame.title:SetText("CrafterExport: " .. professionName .. " (" .. professionRank .. ")")
   CrafterExportText:SetText(recipes:sub(1, -2))
-  CrafterExportText:HighlightText()
 
   if (closed) then
     CrafterExportFrame:Show()
@@ -69,21 +67,21 @@ end
 
 function createCrafterExport() 
   local Profession = CraftFrame or TradeSkillFrame
-  local frame = CreateFrame("Frame", "CrafterExportFrame", Profession, "DialogBoxFrame")
-  frame:SetSize(340, 456)
-  frame:SetPoint("TOPRIGHT", Profession, 310, -12)
+  local frame = CreateFrame("Frame", "CrafterExportFrame", Profession, "BasicFrameTemplateWithInset")
+  frame:SetSize(300, 454)
+  frame:SetPoint("TOPRIGHT", Profession, 270, -13)
   frame:SetMovable(false)
   frame:SetClampedToScreen(true)
-  frame:SetBackdrop({ bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 4, right = 4, top = 4, bottom = 4 } })
-  frame:SetBackdropBorderColor(255, 255, 255, 1)
-  frame:SetBackdropColor(0.1, 0.1, 0.1, 1)
   frame:SetFrameStrata("HIGH")
-  CrafterExportFrameButton:Hide()
   
+  frame.title = frame:CreateFontString(nil, "OVERLAY")
+	frame.title:SetFontObject("GameFontHighlight")
+	frame.title:SetPoint("LEFT", frame.TitleBg, 5, 0)	
+
   frame.scrollFrame = CreateFrame("ScrollFrame", "CrafterExportScroll", CrafterExportFrame, "UIPanelScrollFrameTemplate")
-  frame.scrollFrame:SetPoint("TOP", 0, -18)
-  frame.scrollFrame:SetPoint("BOTTOM", 0, 18)
-  frame.scrollFrame:SetPoint("LEFT", 18, 0)
+  frame.scrollFrame:SetPoint("TOP", 0, -32)
+  frame.scrollFrame:SetPoint("BOTTOM", 0, 36)
+  frame.scrollFrame:SetPoint("LEFT", 12, 0)
   frame.scrollFrame:SetPoint("RIGHT", -36, 0)
   
   frame.editBox = CreateFrame("EditBox", "CrafterExportText",  CrafterExportScroll)
@@ -95,7 +93,19 @@ function createCrafterExport()
   frame.editBox:SetMaxLetters(99999)
   frame.editBox:SetScript("OnEscapePressed", function() frame:Hide() end)
   frame.scrollFrame:SetScrollChild(frame.editBox)
-  
+
+  frame.select = CreateFrame("Button", nil, CrafterExportFrame, "UIPanelButtonTemplate");
+  frame.select:SetPoint("BOTTOM", 0, 7);
+  frame.select:SetPoint("LEFT", 6, 0);
+  frame.select:SetSize(286, 25);
+  frame.select:SetText("Select All");
+  frame.select:SetNormalFontObject("GameFontNormal");
+  frame.select:SetHighlightFontObject("GameFontHighlight");
+  frame.select:SetScript("OnClick", function() 
+    CrafterExportText:HighlightText()
+    CrafterExportText:SetFocus(true)
+  end)
+
   frame.button = CreateFrame("Button", "CrafterExportButton", Profession, "UIPanelButtonTemplate")
   frame.button:SetPoint("BOTTOMLEFT", Profession, 10, 45)
   frame.button:SetSize(340, 25)
@@ -108,7 +118,7 @@ function GetRecipes()
   local name, type
   local recipes = {}
   local first = true
-
+  
   if GetNumTradeSkills() > 1 then
       for i = 1, GetNumTradeSkills() do
           name, type, _, _, _, _ = GetTradeSkillInfo(i)
