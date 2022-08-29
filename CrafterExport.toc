@@ -1,0 +1,9 @@
+## Interface: 20504
+## Title: CrafterExport
+## Notes: Simple addon for WoW WotLK Classic that allows you to export a list of recipe names in a comma delimited format.
+## Author: Ok
+## Version: "1.0"
+## DefaultState: enabled
+
+ExcludedRecipes.lua
+CrafterExport.lua
