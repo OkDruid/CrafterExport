@@ -3,26 +3,24 @@ local addon_name, CE = ...
 local ExcludedRecipes = CE.ExcludedRecipes
 local toggle = false
 
--- Create Frame and Register events
-local CrafterExport = CreateFrame("Frame", "CrafterExport")
-CrafterExport:RegisterEvent("TRADE_SKILL_SHOW")
-CrafterExport:RegisterEvent("CRAFT_SHOW")
-CrafterExport:RegisterEvent("TRADE_SKILL_CLOSE")
-CrafterExport:RegisterEvent("CRAFT_CLOSE")
 
--- Handle events
-CrafterExport:SetScript("OnEvent", function(self, event)
-  
-  -- When the profession window is open
-	if (event == "TRADE_SKILL_SHOW" or event == "CRAFT_SHOW") then
-		  CrafterExport:RegisterEvent("TRADE_SKILL_UPDATE")
-      CrafterExport:RegisterEvent("CRAFT_UPDATE")
+local function OnEvent(self, event, ...)
+
+    -- When the profession window is open
+	if (event == "TRADE_SKILL_SHOW") then 
+    CrafterExport:RegisterEvent("TRADE_SKILL_UPDATE")
+  end
+  if (event == "CRAFT_SHOW") then 
+    CrafterExport:RegisterEvent("CRAFT_UPDATE")
   end
 
   -- When the profession window is closed
-	if (event == "TRADE_SKILL_CLOSE" or event == "CRAFT_CLOSE") then
-		  CrafterExport:UnregisterEvent("TRADE_SKILL_UPDATE")
+  if (event == "TRADE_SKILL_CLOSE" or event == "CRAFT_CLOSE") then
+      CrafterExport:UnregisterEvent("TRADE_SKILL_UPDATE")
       CrafterExport:UnregisterEvent("CRAFT_UPDATE")
+  end
+  if (event == "CRAFT_CLOSE") then
+    CrafterExport:UnregisterEvent("CRAFT_UPDATE")
   end
 
   -- When a profession is changed or filtered
@@ -30,7 +28,16 @@ CrafterExport:SetScript("OnEvent", function(self, event)
       openCrafterExport(toggle) 
   end
 
-end)
+end
+
+-- Create Frame and Register events
+local CrafterExport = CreateFrame("Frame", "CrafterExport")
+CrafterExport:RegisterEvent("TRADE_SKILL_SHOW")
+CrafterExport:RegisterEvent("CRAFT_SHOW")
+CrafterExport:RegisterEvent("TRADE_SKILL_CLOSE")
+CrafterExport:RegisterEvent("CRAFT_CLOSE")
+CrafterExport:SetScript("OnEvent", OnEvent)
+
 
 function toggleCrafterExport(self)
   if (toggle) then
@@ -50,7 +57,6 @@ function openCrafterExport(closed)
 
   CrafterExportText:SetText(recipes:sub(1, -2))
   CrafterExportText:HighlightText()
-  CrafterExportFrameButton:Hide()
 
   if (closed) then
     CrafterExportFrame:Show()
@@ -90,7 +96,6 @@ function createCrafterExport()
   frame.editBox:SetScript("OnEscapePressed", function() frame:Hide() end)
   frame.scrollFrame:SetScrollChild(frame.editBox)
   
-
   frame.button = CreateFrame("Button", "CrafterExportButton", Profession, "UIPanelButtonTemplate")
   frame.button:SetPoint("BOTTOMLEFT", Profession, 10, 45)
   frame.button:SetSize(340, 25)
