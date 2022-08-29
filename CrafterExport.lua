@@ -44,9 +44,10 @@ function isTradeOrCraft()
   
   if (craftRank > 0) then
     return CraftFrame;
-  else
-    return TradeSkillFrame;
   end
+  
+  return TradeSkillFrame;
+  
 end
 
 function tablelength(T)
@@ -91,7 +92,7 @@ function createCrafterExport()
   frame:SetFrameStrata("HIGH")
   
   frame.title = frame:CreateFontString(nil, "OVERLAY")
-	frame.title:SetFontObject("GameFontHighlight")
+	frame.title:SetFontObject("Game13Font") --SystemFont_Outline_Small
 	frame.title:SetPoint("LEFT", frame.TitleBg, 5, 0)	
 
   frame.scrollFrame = CreateFrame("ScrollFrame", "CrafterExportScroll", CrafterExportFrame, "UIPanelScrollFrameTemplate")
