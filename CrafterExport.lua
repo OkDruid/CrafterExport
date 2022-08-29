@@ -27,21 +27,21 @@ CrafterExport:SetScript("OnEvent", function(self, event)
 
   -- When a profession is changed or filtered
   if (event == "TRADE_SKILL_UPDATE" or event == "CRAFT_UPDATE") then
-      openCraftExport(toggle) 
+      openCrafterExport(toggle) 
   end
 
 end)
 
-function toggleCraftExport(self)
+function toggleCrafterExport(self)
   if (toggle) then
     toggle = false
   else
     toggle = true
   end
-  openCraftExport(toggle)
+  openCrafterExport(toggle)
 end
 
-function openCraftExport(closed)
+function openCrafterExport(closed)
   if not CrafterExportFrame then
     createCrafterExport()
   end
@@ -95,7 +95,7 @@ function createCrafterExport()
   frame.button:SetPoint("BOTTOMLEFT", Profession, 10, 45)
   frame.button:SetSize(340, 25)
   frame.button:SetFrameLevel(10)
-  frame.button:SetScript("OnClick", function() toggleCraftExport(self) end)
+  frame.button:SetScript("OnClick", function() toggleCrafterExport(self) end)
 end
 
 -- get table of recipe names from open profession window
