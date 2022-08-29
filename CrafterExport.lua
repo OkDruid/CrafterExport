@@ -39,7 +39,7 @@ function toggleCrafterExport(self)
   openCrafterExport(toggle)
 end
 
-function hasTradeOrCraft()
+function isTradeOrCraft()
   local craftName, craftRank, _ = GetCraftDisplaySkillLine()
   
   if (craftRank > 0) then
@@ -49,20 +49,26 @@ function hasTradeOrCraft()
   end
 end
 
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
+
 function openCrafterExport(closed)
   if not CrafterExportFrame then
     createCrafterExport()
   end
-  local recipes = Recipes(ExcludedRecipes);
+  local source = GetRecipes();
+  local recipes = Recipes(ExcludedRecipes, source);
+  local recipeCount =  tablelength(source)
   local craftName, craftRank, _ = GetCraftDisplaySkillLine()
 	local tsName, tsRank, _ = GetTradeSkillLine()
   local professionName = tsName;
-  local professionRank = tsRank;
   if (craftRank > 0) then
-    professionRank = craftRank;
     professionName = craftName;
   end
-  CrafterExportFrame.title:SetText("CrafterExport: " .. professionName .. " (" .. professionRank .. ")")
+  CrafterExportFrame.title:SetText("CrafterExport: " .. professionName .. " (" .. recipeCount .. ")")
   CrafterExportText:SetText(recipes:sub(1, -2))
 
   if (closed) then
@@ -76,7 +82,7 @@ function openCrafterExport(closed)
 end
 
 function createCrafterExport() 
-  local Profession = hasTradeOrCraft()
+  local Profession = isTradeOrCraft()
   local frame = CreateFrame("Frame", "CrafterExportFrame", Profession, "BasicFrameTemplateWithInset")
   frame:SetSize(300, 454)
   frame:SetPoint("TOPRIGHT", Profession, 270, -13)
@@ -160,9 +166,9 @@ function GetRecipes()
 end
 
 -- Iterate through recipes excluding those from trainers
-function Recipes(excluded)  
+function Recipes(excluded, source)  
   local exportRecipes = ""
-  local recipes = GetRecipes()
+  local recipes = source
   
   for index, recipe in pairs(recipes) do
     local exportRecipe = ""
