@@ -39,6 +39,16 @@ function toggleCrafterExport(self)
   openCrafterExport(toggle)
 end
 
+function hasTradeOrCraft()
+  local craftName, craftRank, _ = GetCraftDisplaySkillLine()
+  
+  if (craftRank > 0) then
+    return CraftFrame;
+  else
+    return TradeSkillFrame;
+  end
+end
+
 function openCrafterExport(closed)
   if not CrafterExportFrame then
     createCrafterExport()
@@ -66,7 +76,7 @@ function openCrafterExport(closed)
 end
 
 function createCrafterExport() 
-  local Profession = CraftFrame or TradeSkillFrame
+  local Profession = hasTradeOrCraft()
   local frame = CreateFrame("Frame", "CrafterExportFrame", Profession, "BasicFrameTemplateWithInset")
   frame:SetSize(300, 454)
   frame:SetPoint("TOPRIGHT", Profession, 270, -13)
@@ -86,7 +96,7 @@ function createCrafterExport()
   
   frame.editBox = CreateFrame("EditBox", "CrafterExportText",  CrafterExportScroll)
   frame.editBox:SetPoint("TOPLEFT", frame.scrollFrame, 5, -5)
-  frame.editBox:SetSize(CrafterExportScroll:GetSize())
+  frame.editBox:SetSize(frame.scrollFrame:GetSize())
   frame.editBox:SetMultiLine(true)
   frame.editBox:SetAutoFocus(false)
   frame.editBox:SetFontObject("ChatFontSmall")
