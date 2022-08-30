@@ -1,4 +1,4 @@
-## Interface: 20504
+## Interface: 30400
 ## Title: CrafterExport
 ## Notes: Export a list of recipe names in a comma delimited format.
 ## Author: OkDruid
