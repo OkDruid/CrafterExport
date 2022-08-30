@@ -71,7 +71,7 @@ end
 
 function ProfessionTextColor(index)
   if (index) then
-  CrafterExportText:SetTextColor(index:match("^%s*(.-)%s*$"):match("([^,]+),([^,]+),([^,]+)"))
+    CrafterExportText:SetTextColor(index:match("^%s*(.-)%s*$"):match("([^,]+),([^,]+),([^,]+)"))
   end
 end
 
@@ -85,7 +85,7 @@ function openCrafterExport(closed)
   local recipes = Recipes(ExcludedRecipes, source)
   local recipeCount =  tablelength(source)
   local craftName, craftRank, _ = GetCraftDisplaySkillLine()
-	local tsName, tsRank, _ = GetTradeSkillLine()
+  local tsName, tsRank, _ = GetTradeSkillLine()
   local professionName = tsName
   if (craftRank > 0) then
     professionName = craftName
@@ -133,7 +133,6 @@ function createCrafterExport()
   frame.editBox:SetAutoFocus(false)
   frame.editBox:SetFontObject("SystemFont_Outline_Small")
   frame.editBox:SetMaxLetters(99999)
-  --frame.editBox:EnableKeyboard(false)
   frame.editBox:SetScript("OnEscapePressed", function()
     frame:Hide()
   end)
