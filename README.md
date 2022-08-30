@@ -6,4 +6,4 @@ Recipes learned from a trainer are excluded as anyone can make them.
 
 **Note:** To export all recipes make sure you expand all category filters in the profession window.
 
-![image info](https://wago-addons.ams3.digitaloceanspaces.com/gallery/UaVRhnTR9Yu1EckfBSm1tPkiXRSF1eZ8Xf4DBVYw.png)
+![image info](https://wago-addons.ams3.digitaloceanspaces.com/gallery/GzWQUdMTMW4Y4E3Yqn5ZAOOmzehUHk0LxFQdVVGP.png)
