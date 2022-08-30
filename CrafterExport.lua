@@ -3,19 +3,21 @@ local addon_name, CE = ...
 local ExcludedRecipes = CE.ExcludedRecipes
 local toggle = false
 
--- profession text colors
+-- profession colors
 local professions = {
-  Alchemy = "0.64, 0.82, 0.79",
-  Blacksmithing = "0.51, 0.50, 0.51",
-  Cooking = "0.91, 0.56, 0.36",
-  Enchanting = "0.95, 0.36, 0.32",
-  Engineering = "1, 0.89, 0.33",
-  Inscription = "0.28, 0.53, 0.31",
-  Jewelcrafting = "0.56, 0.42, 0.58",
-  Leatherworking = "0.65, 0.5, 0.35",
-  Mining = "0.49, 0.49, 0.41",
-  Smelting = "0.49, 0.49, 0.41",
-  Tailoring = "0.82, 0.78, 0.69"
+  ["Alchemy"] = "0.64, 0.82, 0.79",
+  ["Blacksmithing"] = "0.51, 0.50, 0.51",
+  ["Cooking"] = "0.91, 0.56, 0.36",
+  ["Enchanting"] = "0.95, 0.36, 0.32",
+  ["Engineering"] = "1, 0.89, 0.33",
+  ["Inscription"] = "0.28, 0.53, 0.31",
+  ["Jewelcrafting"] = "0.56, 0.42, 0.58",
+  ["Leatherworking"] = "0.65, 0.5, 0.35",
+  ["Mining"] = "0.49, 0.49, 0.41",
+  ["Smelting"] = "0.49, 0.49, 0.41",
+  ["Tailoring"] = "0.82, 0.78, 0.69",
+  ["First Aid"] = "0.95, 0.36, 0.32",
+  ["Poisons"] = "0.28, 0.53, 0.31"
 }
 
 function OnEvent(self, event, ...)
@@ -69,9 +71,12 @@ function tablelength(T)
   return count
 end
 
-function ProfessionTextColor(index)
+function ProfessionColor(index)
   if (index) then
     CrafterExportText:SetTextColor(index:match("^%s*(.-)%s*$"):match("([^,]+),([^,]+),([^,]+)"))
+    CrafterExportCount:SetTextColor(index:match("^%s*(.-)%s*$"):match("([^,]+),([^,]+),([^,]+)"))
+    CrafterExportFrame:SetBackdropColor(index:match("^%s*(.-)%s*$"):match("([^,]+),([^,]+),([^,]+)"))
+    CrafterExportFrame:SetBackdropBorderColor(index:match("^%s*(.-)%s*$"):match("([^,]+),([^,]+),([^,]+)"))
   end
 end
 
@@ -79,21 +84,20 @@ function openCrafterExport(closed)
   if not CrafterExportFrame then
     createCrafterExport()
   end
-  
-  local localizedClass, englishClass, classIndex = UnitClass("player")
   local source = GetRecipes()
-  local recipes = Recipes(ExcludedRecipes, source)
-  local recipeCount =  tablelength(source)
+  local recipeCount = tablelength(source)
+  local recipes = Recipes(ExcludedRecipes, source):sub(1, -2)
   local craftName, craftRank, _ = GetCraftDisplaySkillLine()
   local tsName, tsRank, _ = GetTradeSkillLine()
   local professionName = tsName
   if (craftRank > 0) then
     professionName = craftName
   end
-  CrafterExportFrame.title:SetText("CrafterExport: " .. professionName .. " (" .. recipeCount .. ")")
-  CrafterExportText:SetText(recipes:sub(1, -2))
-  
-  ProfessionTextColor(professions[professionName])
+
+  CrafterExportFrame.title:SetText("CrafterExport: " .. professionName .. " (" .. recipeCount ..")")
+  CrafterExportFrame.count:SetText("(" .. #recipes .. ")")
+  CrafterExportText:SetText(recipes)
+  ProfessionColor(professions[professionName])
   
   if (closed) then
     CrafterExportFrame:Show()
@@ -110,15 +114,17 @@ function createCrafterExport()
   local frame = CreateFrame("Frame", "CrafterExportFrame", Profession, "TooltipBorderedFrameTemplate")
   frame:SetPoint("TOPRIGHT", Profession, 270, -12)
   frame:SetSize(300, 456)
-  frame:SetBackdropBorderColor(255, 255, 255, 1)
-  frame:SetBackdropColor(32/255, 34/255, 37/255)
   frame:SetMovable(false)
   frame:SetClampedToScreen(true)
   frame:SetFrameStrata("HIGH")
 
-  frame.title = frame:CreateFontString(nil, "OVERLAY")
-	frame.title:SetFontObject("SystemFont_Outline")
-	frame.title:SetPoint("TOPLEFT", frame, 12, -10)	
+  frame.title = frame:CreateFontString("CrafterExportTitle", "OVERLAY")
+  frame.title:SetFontObject("SystemFont_Outline")
+  frame.title:SetPoint("TOPLEFT", frame, 12, -10)	
+  
+  frame.count = frame:CreateFontString("CrafterExportCount", "OVERLAY")
+  frame.count:SetFontObject("SystemFont_Outline_Small")
+  frame.count:SetPoint("TOPRIGHT", frame, -8, -12)	
 
   frame.scrollFrame = CreateFrame("ScrollFrame", "CrafterExportScroll", CrafterExportFrame, "UIPanelScrollFrameTemplate")
   frame.scrollFrame:SetPoint("TOP", 0, -32)
