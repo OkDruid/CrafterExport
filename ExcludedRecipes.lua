@@ -32,6 +32,7 @@ CE.ExcludedRecipes = {
     "Coyote Steak",
     "Crab Cake",
     "Dry Pork Ribs",
+    "Smelt Copper",
     "Smelt Silver",
     "Smelt Bronze",
     "Copper Chain Belt",
