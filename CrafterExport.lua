@@ -2,6 +2,7 @@
 local addon_name, CE = ...
 local ExcludedRecipes = CE.ExcludedRecipes
 local toggle = false
+local size = 0
 
 -- profession colors
 local professions = {
@@ -85,8 +86,8 @@ function openCrafterExport(closed)
     createCrafterExport()
   end
   local source = GetRecipes()
-  local recipeCount = tablelength(source)
   local recipes = Recipes(ExcludedRecipes, source):sub(1, -2)
+  local recipeCount = size
   local craftName, craftRank, _ = GetCraftDisplaySkillLine()
   local tsName, tsRank, _ = GetTradeSkillLine()
   local professionName = tsName
@@ -169,7 +170,7 @@ function GetRecipes()
   local name, type
   local recipes = {}
   local first = true
-  
+  size = 0
   if GetNumTradeSkills() > 1 then
       for i = 1, GetNumTradeSkills() do
           name, type, _, _, _, _ = GetTradeSkillInfo(i)
@@ -195,7 +196,7 @@ function GetRecipes()
           end
       end
   end
-
+ 
   return recipes
 
 end
@@ -204,11 +205,11 @@ end
 function Recipes(excluded, source)  
   local exportRecipes = ""
   local recipes = source
-  
   for index, recipe in pairs(recipes) do
     local exportRecipe = ""
     if not has_value(excluded, recipe) then
       exportRecipe = recipes[index] .. ","
+      size = size + 1
     end
     exportRecipes = (exportRecipes .. exportRecipe)
   end
