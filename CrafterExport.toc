@@ -2,7 +2,7 @@
 ## Title: CrafterExport
 ## Notes: Export a list of recipe names in a comma delimited format.
 ## Author: OkDruid
-## Version: "1.0.0"
+## Version: "1.0.1"
 ## DefaultState: enabled
 ## X-Wago-ID: 2jK8JbNy
 ## X-Curse-Project-ID: 665969
