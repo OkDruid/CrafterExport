@@ -1,7 +1,7 @@
 -- ExcludedRecipes.lua
 local addon_name, CE = ...
 
--- table of excluded recipes using https://wowhead.com/wotlk profession tables filtered to 'trainer' as referencegit config
+-- table of excluded recipes using https://wowhead.com/wotlk profession tables filtered to 'trainer' as reference
 CE.ExcludedRecipes = {
 	"Abyssal Shatter",
 	"Accurate Huge Citrine",
