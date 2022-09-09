@@ -4,6 +4,7 @@ local ExcludedRecipes = CE.ExcludedRecipes
 local toggle = false
 local size = 0
 
+
 -- profession colors
 local professions = {
   ["Alchemy"] = "0.64, 0.82, 0.79",
@@ -34,7 +35,9 @@ function OnEvent(self, event, ...)
     CrafterExport:UnregisterEvent("CRAFT_UPDATE")
   end
 
-  openCrafterExport(toggle)
+  if (event == "TRADE_SKILL_UPDATE" or event == "CRAFT_UPDATE") then
+    openCrafterExport(toggle)
+  end
 
 end
 
@@ -163,6 +166,21 @@ function createCrafterExport()
   frame.button:SetFrameLevel(10)
   frame.button:SetScript("OnClick", function() toggleCrafterExport(self) end)
   
+  -- Support for Leatrix Plus if Enhance Professions setting is enabled
+  if IsAddOnLoaded("Leatrix_Plus") then
+    if _G.LeaPlusDB["EnhanceProfessions"] == "On" then
+      frame.button:ClearAllPoints()
+      frame.button:SetPoint("BOTTOMRIGHT", Profession, -60, 76)
+      frame.button:SetSize(308, 23)
+      frame:SetSize(300, 499)
+      -- Elvui
+      if IsAddOnLoaded("Elvui") then
+        frame.button:ClearAllPoints()
+        frame.button:SetPoint("BOTTOMRIGHT", Profession, -40, 105)
+        frame.button:SetSize(330, 23)
+      end
+    end
+  end
 end
 
 -- get table of recipe names from open profession window
@@ -230,4 +248,18 @@ function has_value(tab, val)
     end
   end
   return false
+end
+
+-- Run function when TradeSkill UI has loaded
+  if IsAddOnLoaded("Blizzard_TradeSkillUI") then
+    openCrafterExport(toggle)
+  else
+    local waitFrame = CreateFrame("FRAME")
+    waitFrame:RegisterEvent("ADDON_LOADED")
+    waitFrame:SetScript("OnEvent", function(self, event, arg1)
+        if arg1 == "Blizzard_TradeSkillUI" then
+          openCrafterExport(toggle)
+          waitFrame:UnregisterAllEvents()
+        end
+    end)
 end
