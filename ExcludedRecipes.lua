@@ -1,7 +1,7 @@
 -- ExcludedRecipes.lua
 local addon_name, CE = ...
 
--- table of excluded recipes using https://wowhead.com/wotlk profession tables filtered to 'trainer' as reference
+-- table of excluded recipes based on https://wowhead.com/wotlk profession tables filtered to 'trainer'
 CE.ExcludedRecipes = {
 	"Abyssal Shatter",
 	"Accurate Huge Citrine",
@@ -706,6 +706,7 @@ CE.ExcludedRecipes = {
 	"Handful of Copper Bolts",
 	"Handful of Fel Iron Bolts",
 	"Handstitched Leather Belt",
+	"Handstitched Leather Boots",
 	"Handstitched Leather Bracers",
 	"Handstitched Leather Cloak",
 	"Handstitched Leather Pants",
