@@ -35,8 +35,10 @@ function OnEvent(self, event, ...)
     CrafterExport:UnregisterEvent("CRAFT_UPDATE")
   end
 
-  if (event == "TRADE_SKILL_UPDATE" or event == "CRAFT_UPDATE") then
-    openCrafterExport(toggle)
+  if isTradeOrCraft() then
+    if (event == "TRADE_SKILL_UPDATE" or event == "CRAFT_UPDATE") then
+      openCrafterExport(toggle)
+    end
   end
 
 end
